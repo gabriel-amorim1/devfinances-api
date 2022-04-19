@@ -53,6 +53,7 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^4.0.0",
         "jest": "^27.2.5",
+        "pre-push": "^0.1.2",
         "prettier": "^2.3.2",
         "source-map-support": "^0.5.20",
         "supertest": "^6.1.3",
@@ -79,6 +80,9 @@
         "coverageDirectory": "../coverage",
         "testEnvironment": "node"
     },
-    "pre-commit": "format:quick",
-    "pre-push": "format:check && test && test:e2e"
+    "pre-push": [
+        "format:check",
+        "test",
+        "test:e2e"
+    ]
 }
