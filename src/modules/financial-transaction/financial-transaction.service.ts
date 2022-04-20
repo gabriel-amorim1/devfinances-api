@@ -1,8 +1,12 @@
-import { CreateFinancialTransactionDTO } from './dtos/create-financial-transaction.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import {
+    formatPaginateDataToResponse,
+    formatParamsToTypeOrmOptionsWithPaginate,
+    RequestGetAllInterface,
+} from '../../utils';
+import { CreateFinancialTransactionDTO } from './dtos/create-financial-transaction.dto';
 import { FinancialTransactionRepository } from './repositories/financial-transaction.repository';
-import * as currency from 'currency.js';
 
 @Injectable()
 class FinancialTransactionService {
@@ -12,15 +16,21 @@ class FinancialTransactionService {
     ) {}
 
     async create(financialTransactionData: CreateFinancialTransactionDTO) {
-        const amount = currency(financialTransactionData.amount);
+        return this.financialTransactionRepository.save(
+            financialTransactionData,
+        );
+    }
 
-        const createdFinancialTransaction =
-            await this.financialTransactionRepository.save({
-                ...financialTransactionData,
-                amount: amount.intValue,
-            });
+    async findAll(queryParams: RequestGetAllInterface) {
+        const options = formatParamsToTypeOrmOptionsWithPaginate(queryParams);
 
-        return { ...createdFinancialTransaction, amount: amount.value };
+        const [data, count] =
+            await this.financialTransactionRepository.findAndCount(options);
+
+        return formatPaginateDataToResponse(queryParams, {
+            data,
+            count,
+        });
     }
 }
 
