@@ -4,7 +4,6 @@ import {
     OptionsTypeOrmGetAllWithPagination,
     PaginateResponseProperties,
     RequestGetAllInterface,
-    UserRequestInterface,
 } from './interfaces';
 import {
     buildSortParams,
@@ -42,5 +41,4 @@ export {
     OptionsTypeOrmGetAllWithPagination,
     OptionsTypeOrmGetAllWithoutPagination,
     PaginateResponseProperties,
-    UserRequestInterface,
 };

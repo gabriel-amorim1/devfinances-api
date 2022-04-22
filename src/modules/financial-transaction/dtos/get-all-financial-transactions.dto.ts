@@ -8,15 +8,15 @@ const sortParams = [...dateFilters, 'description', 'amount'];
 export class GetAllFinancialTransactionsDTO {
     @IsOptional()
     @IsString()
-    description: string;
+    description?: string;
 
     @IsOptional()
-    @Matches(/^\d*(\.)?\d[0-2]$/)
-    amount: number;
+    @Matches(/^\d*(\.\d{1,2})?$/)
+    amount?: number;
 
     @IsOptional()
     @Matches(/^\d{2}\/\d{2}\/\d{4}$/)
-    date: string;
+    date?: string;
 
     @IsOptional()
     @Matches(/\d/)

@@ -1,6 +1,4 @@
 export interface RequestGetAllInterface {
-    withPagination?: string;
-    showInactive?: string;
     page?: string;
     size?: string;
     sortParam?: string;
@@ -8,10 +6,6 @@ export interface RequestGetAllInterface {
     dateFilter?: string;
     startDateFilter?: string;
     endDateFilter?: string;
-    updated_by_name?: string;
-    updated_by_email?: string;
-    created_by_name?: string;
-    created_by_email?: string;
 }
 
 export interface OptionsTypeOrmGetAllWithPagination
@@ -30,27 +24,6 @@ export interface OptionsTypeOrmGetAllWithoutPagination {
         order: 'DESC' | 'ASC';
     };
 }
-
-export interface ActivateDataInterface {
-    active?: boolean;
-    inactivation_date?: Date;
-}
-export interface UserRequestInterface {
-    username: string;
-    useremail: string;
-}
-export interface CreatedByInterface {
-    created_by_name?: string;
-    created_by_email?: string;
-}
-
-export interface UpdatedByInterface {
-    updated_by_name?: string;
-    updated_by_email?: string;
-}
-
-export type CreatedByAndUpdatedByInterface = CreatedByInterface &
-    UpdatedByInterface;
 
 export interface PaginateResponseProperties {
     count: number;

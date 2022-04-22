@@ -1,7 +1,8 @@
+import * as moment from 'moment';
+
 import { Between, FindOperator, Raw } from 'typeorm';
 
 import { RequestGetAllInterface } from './interfaces';
-import moment from 'moment';
 
 export const dynamicFilter = <T>(
     data: T & RequestGetAllInterface,

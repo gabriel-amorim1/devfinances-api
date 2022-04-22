@@ -1,11 +1,9 @@
 import { FinancialTransactionController } from '../financial-transaction.controller';
 import { FinancialTransactionRepository } from '../repositories/financial-transaction.repository';
 import { FinancialTransactionService } from '../financial-transaction.service';
-import { ModuleMocker } from 'jest-mock';
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
-const moduleMocker = new ModuleMocker(global);
 describe('FinancialTransactionController', () => {
     let financialTransactionController: FinancialTransactionController;
     let financialTransactionService: FinancialTransactionService;
@@ -61,6 +59,46 @@ describe('FinancialTransactionController', () => {
                 ),
             ).toBe(financialTransactionSut);
             expect(serviceSpy).toBeCalledWith(createFinancialTransactionSut);
+        });
+    });
+
+    describe('findAll', () => {
+        it('should call findAll service and return an array of financial transactions', async () => {
+            const serviceSpy = jest
+                .spyOn(financialTransactionService, 'findAll')
+                .mockResolvedValue({
+                    data: [financialTransactionSut],
+                    count: 1,
+                    limit: 20,
+                    page: 1,
+                    totalPages: 1,
+                });
+
+            const queryParams = {
+                description: 'description',
+                amount: 2,
+                date: '22/04/2022',
+                page: '1',
+                size: '20',
+                sortOrder: 'desc',
+                created_at: '2022-04-22',
+                updated_at: '2022-04-22',
+                startDateFilter: '2022-04-22',
+                endDateFilter: '2022-04-22',
+                dateFilter: 'created_at',
+                sortParam: 'created_at',
+            };
+
+            expect(
+                await financialTransactionController.findAll(queryParams),
+            ).toStrictEqual({
+                data: [financialTransactionSut],
+                count: 1,
+                limit: 20,
+                page: 1,
+                totalPages: 1,
+            });
+            expect(serviceSpy).toBeCalledWith(queryParams);
         });
     });
 });
