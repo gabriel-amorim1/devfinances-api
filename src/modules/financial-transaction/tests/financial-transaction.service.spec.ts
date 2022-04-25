@@ -34,6 +34,7 @@ describe('FinancialTransactionService', () => {
                     provide: getRepositoryToken(FinancialTransactionRepository),
                     useValue: {
                         save: jest.fn(),
+                        findOne: jest.fn(),
                         findAndCount: jest.fn(),
                     },
                 },
@@ -130,6 +131,69 @@ describe('FinancialTransactionService', () => {
                 totalPages: 1,
             });
             expect(repositorySpy).toBeCalled();
+        });
+    });
+
+    describe('update', () => {
+        it('should return a financialTransaction', async () => {
+            const updateFinancialTransactionSut = {
+                description: 'FinancialTransactionUpdateTest',
+                amount: 72.62,
+                date: '22/04/2022',
+            };
+
+            const findOneSpy = jest
+                .spyOn(financialTransactionRepository, 'findOne')
+                .mockResolvedValue(financialTransactionSut);
+
+            const saveSpy = jest
+                .spyOn(financialTransactionRepository, 'save')
+                .mockResolvedValue({
+                    ...financialTransactionSut,
+                    ...updateFinancialTransactionSut,
+                });
+
+            expect(
+                await financialTransactionService.update(
+                    financialTransactionSut.id,
+                    updateFinancialTransactionSut,
+                ),
+            ).toStrictEqual({
+                ...financialTransactionSut,
+                ...updateFinancialTransactionSut,
+            });
+            expect(findOneSpy).toBeCalledWith(financialTransactionSut.id);
+            expect(saveSpy).toBeCalledWith({
+                ...financialTransactionSut,
+                ...updateFinancialTransactionSut,
+            });
+        });
+
+        it('should return return a NotFoundException', async () => {
+            expect.hasAssertions();
+
+            const updateFinancialTransactionSut = {
+                description: 'FinancialTransactionUpdateTest',
+                amount: 72.62,
+                date: '22/04/2022',
+            };
+
+            const findOneSpy = jest
+                .spyOn(financialTransactionRepository, 'findOne')
+                .mockResolvedValue(undefined);
+
+            const saveSpy = jest.spyOn(financialTransactionRepository, 'save');
+
+            try {
+                await financialTransactionService.update(
+                    financialTransactionSut.id,
+                    updateFinancialTransactionSut,
+                );
+            } catch (error) {
+                expect(error.message).toBe('Financial Transaction not found.');
+                expect(findOneSpy).toBeCalledWith(financialTransactionSut.id);
+                expect(saveSpy).not.toBeCalled();
+            }
         });
     });
 });

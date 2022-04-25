@@ -1,4 +1,5 @@
 import { FinancialTransactionController } from '../financial-transaction.controller';
+import { FinancialTransactionEntity } from '../entities/financial-transaction.entity';
 import { FinancialTransactionRepository } from '../repositories/financial-transaction.repository';
 import { FinancialTransactionService } from '../financial-transaction.service';
 import { Test } from '@nestjs/testing';
@@ -62,6 +63,21 @@ describe('FinancialTransactionController', () => {
         });
     });
 
+    describe('findById', () => {
+        it('should call findById service and return financial transactions', async () => {
+            const serviceSpy = jest
+                .spyOn(financialTransactionService, 'findById')
+                .mockResolvedValue(financialTransactionSut);
+
+            expect(
+                await financialTransactionController.findById({
+                    id: financialTransactionSut.id,
+                }),
+            ).toEqual(financialTransactionSut);
+            expect(serviceSpy).toBeCalledWith(financialTransactionSut.id);
+        });
+    });
+
     describe('findAll', () => {
         it('should call findAll service and return an array of financial transactions', async () => {
             const serviceSpy = jest
@@ -99,6 +115,37 @@ describe('FinancialTransactionController', () => {
                 totalPages: 1,
             });
             expect(serviceSpy).toBeCalledWith(queryParams);
+        });
+    });
+
+    describe('update', () => {
+        it('should return a financialTransaction', async () => {
+            const updateData = {
+                description: 'FinancialTransactionUpdateTest',
+                amount: 55.22,
+                date: '25/04/2022',
+            };
+
+            const updatedObject: FinancialTransactionEntity = {
+                ...financialTransactionSut,
+                ...updateData,
+                updated_at: new Date(),
+            };
+
+            const serviceSpy = jest
+                .spyOn(financialTransactionService, 'update')
+                .mockResolvedValue(updatedObject);
+
+            expect(
+                await financialTransactionController.update(
+                    { id: financialTransactionSut.id },
+                    updateData,
+                ),
+            ).toBe(updatedObject);
+            expect(serviceSpy).toBeCalledWith(
+                financialTransactionSut.id,
+                updateData,
+            );
         });
     });
 });

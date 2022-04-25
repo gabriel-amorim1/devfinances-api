@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
     formatPaginateDataToResponse,
@@ -6,6 +6,7 @@ import {
 } from '../../utils';
 import { CreateFinancialTransactionDTO } from './dtos/create-financial-transaction.dto';
 import { GetAllFinancialTransactionsDTO } from './dtos/get-all-financial-transactions.dto';
+import { UpdateFinancialTransactionDTO } from './dtos/update-financial-transaction.dto';
 import { FinancialTransactionRepository } from './repositories/financial-transaction.repository';
 
 @Injectable()
@@ -21,6 +22,19 @@ class FinancialTransactionService {
         );
     }
 
+    async findById(financialTransactionId: string) {
+        const financialTransactionFound =
+            await this.financialTransactionRepository.findOne(
+                financialTransactionId,
+            );
+
+        if (!financialTransactionFound) {
+            throw new NotFoundException('Financial Transaction not found.');
+        }
+
+        return financialTransactionFound;
+    }
+
     async findAll(queryParams: GetAllFinancialTransactionsDTO) {
         const options = formatParamsToTypeOrmOptionsWithPaginate(queryParams);
 
@@ -30,6 +44,20 @@ class FinancialTransactionService {
         return formatPaginateDataToResponse(queryParams, {
             data,
             count,
+        });
+    }
+
+    async update(
+        financialTransactionId: string,
+        financialTransactionData: UpdateFinancialTransactionDTO,
+    ) {
+        const financialTransactionFound = await this.findById(
+            financialTransactionId,
+        );
+
+        return this.financialTransactionRepository.save({
+            ...financialTransactionFound,
+            ...financialTransactionData,
         });
     }
 }
