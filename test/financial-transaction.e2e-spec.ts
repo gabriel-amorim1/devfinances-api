@@ -9,6 +9,7 @@ import { FinancialTransactionModule } from '../src/modules/financial-transaction
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getDatabaseConfigConnectionQA } from '../src/database';
+import { v4 } from 'uuid';
 
 describe('FinancialTransaction suite test e2e', () => {
     let app: INestApplication;
@@ -101,6 +102,17 @@ describe('FinancialTransaction suite test e2e', () => {
                 )
                 .expect(200)
                 .expect(createdFinancialTransaction);
+        });
+
+        it(`should return status 404 Not found`, () => {
+            return request(app.getHttpServer())
+                .get(`/financial-transactions/${v4()}`)
+                .expect(404)
+                .expect({
+                    statusCode: 404,
+                    message: 'Financial Transaction not found.',
+                    error: 'Not Found',
+                });
         });
 
         it(`should return status 400`, async () => {
@@ -209,6 +221,17 @@ describe('FinancialTransaction suite test e2e', () => {
             expect(updated_at).not.toBeUndefined();
         });
 
+        it(`should return status 404 Not found`, () => {
+            return request(app.getHttpServer())
+                .put(`/financial-transactions/${v4()}`)
+                .expect(404)
+                .expect({
+                    statusCode: 404,
+                    message: 'Financial Transaction not found.',
+                    error: 'Not Found',
+                });
+        });
+
         it(`should return a bad request with invalid body`, async () => {
             const res = await request(app.getHttpServer())
                 .put(
@@ -234,6 +257,40 @@ describe('FinancialTransaction suite test e2e', () => {
         it(`should return a bad request when send invalid id`, async () => {
             const res = await request(app.getHttpServer())
                 .put('/financial-transactions/invalid-id')
+                .send();
+
+            expect(res.statusCode).toBe(400);
+            expect(res.body.error).toBe('Bad Request');
+            expect(res.body.message).toEqual(
+                expect.arrayContaining(['id must be a UUID']),
+            );
+        });
+    });
+
+    describe('/DELETE financial-transactions/:id', () => {
+        it(`should return status 204`, () => {
+            return request(app.getHttpServer())
+                .delete(
+                    `/financial-transactions/${createdFinancialTransaction.id}`,
+                )
+                .expect(204)
+                .expect({});
+        });
+
+        it(`should return status 404 Not found`, () => {
+            return request(app.getHttpServer())
+                .delete(`/financial-transactions/${v4()}`)
+                .expect(404)
+                .expect({
+                    statusCode: 404,
+                    message: 'Financial Transaction not found.',
+                    error: 'Not Found',
+                });
+        });
+
+        it(`should return status 400`, async () => {
+            const res = await request(app.getHttpServer())
+                .delete('/financial-transactions/invalid-id')
                 .send();
 
             expect(res.statusCode).toBe(400);

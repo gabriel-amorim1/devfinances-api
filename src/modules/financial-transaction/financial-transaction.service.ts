@@ -60,6 +60,14 @@ class FinancialTransactionService {
             ...financialTransactionData,
         });
     }
+
+    async remove(financialTransactionId: string) {
+        await this.findById(financialTransactionId);
+
+        return this.financialTransactionRepository.delete(
+            financialTransactionId,
+        );
+    }
 }
 
 export { FinancialTransactionService };

@@ -36,6 +36,7 @@ describe('FinancialTransactionService', () => {
                         save: jest.fn(),
                         findOne: jest.fn(),
                         findAndCount: jest.fn(),
+                        delete: jest.fn(),
                     },
                 },
             ],
@@ -193,6 +194,54 @@ describe('FinancialTransactionService', () => {
                 expect(error.message).toBe('Financial Transaction not found.');
                 expect(findOneSpy).toBeCalledWith(financialTransactionSut.id);
                 expect(saveSpy).not.toBeCalled();
+            }
+        });
+    });
+
+    describe('delete', () => {
+        it('should delete a financialTransaction', async () => {
+            const findOneSpy = jest
+                .spyOn(financialTransactionRepository, 'findOne')
+                .mockResolvedValue(financialTransactionSut);
+
+            const deleteResult = {
+                raw: [],
+                affected: 1,
+            };
+
+            const deleteSpy = jest
+                .spyOn(financialTransactionRepository, 'delete')
+                .mockResolvedValue(deleteResult);
+
+            expect(
+                await financialTransactionService.remove(
+                    financialTransactionSut.id,
+                ),
+            ).toStrictEqual(deleteResult);
+            expect(findOneSpy).toBeCalledWith(financialTransactionSut.id);
+            expect(deleteSpy).toBeCalledWith(financialTransactionSut.id);
+        });
+
+        it('should return return a NotFoundException', async () => {
+            expect.hasAssertions();
+
+            const findOneSpy = jest
+                .spyOn(financialTransactionRepository, 'findOne')
+                .mockResolvedValue(undefined);
+
+            const deleteSpy = jest.spyOn(
+                financialTransactionRepository,
+                'delete',
+            );
+
+            try {
+                await financialTransactionService.remove(
+                    financialTransactionSut.id,
+                );
+            } catch (error) {
+                expect(error.message).toBe('Financial Transaction not found.');
+                expect(findOneSpy).toBeCalledWith(financialTransactionSut.id);
+                expect(deleteSpy).not.toBeCalled();
             }
         });
     });

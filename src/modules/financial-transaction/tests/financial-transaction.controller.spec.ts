@@ -148,4 +148,22 @@ describe('FinancialTransactionController', () => {
             );
         });
     });
+
+    describe('delete', () => {
+        it('should call delete function in FinancialTransactionService', async () => {
+            const serviceSpy = jest
+                .spyOn(financialTransactionService, 'remove')
+                .mockResolvedValue({
+                    raw: [],
+                    affected: 1,
+                });
+
+            expect(
+                await financialTransactionController.remove({
+                    id: financialTransactionSut.id,
+                }),
+            ).toBeUndefined();
+            expect(serviceSpy).toBeCalledWith(financialTransactionSut.id);
+        });
+    });
 });
