@@ -14,10 +14,10 @@ export class FinancialTransactionEntity {
     @Column()
     description: string;
 
-    @Column()
+    @Column('decimal', { scale: 2 })
     amount: number;
 
-    @Column({ type: 'date' })
+    @Column()
     date: string;
 
     @CreateDateColumn()
