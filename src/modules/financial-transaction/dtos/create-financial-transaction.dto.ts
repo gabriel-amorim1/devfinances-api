@@ -8,6 +8,6 @@ export class CreateFinancialTransactionDTO {
     @IsNumber({ maxDecimalPlaces: 2 })
     amount: number;
 
-    @Matches(/^\d{2}\/\d{2}\/\d{4}$/)
+    @Matches(/^\d{4}-\d{2}-\d{2}$/)
     date: string;
 }

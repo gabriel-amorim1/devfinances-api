@@ -12,7 +12,7 @@ describe('FinancialTransactionController', () => {
     const financialTransactionSut = {
         description: 'FinancialTransactionCreateTest',
         amount: 22.22,
-        date: '18/04/2022',
+        date: '2022-04-18',
         id: 'b1b4d780-5e96-434c-bd45-b8f21e25bf56',
         created_at: new Date(),
         updated_at: new Date(),
@@ -21,7 +21,7 @@ describe('FinancialTransactionController', () => {
     const createFinancialTransactionSut = {
         description: 'FinancialTransactionCreateTest',
         amount: 22.22,
-        date: '18/04/2022',
+        date: '2022-04-18',
         id: 'b1b4d780-5e96-434c-bd45-b8f21e25bf56',
         created_at: new Date(),
         updated_at: new Date(),
@@ -93,7 +93,7 @@ describe('FinancialTransactionController', () => {
             const queryParams = {
                 description: 'description',
                 amount: 2,
-                date: '22/04/2022',
+                date: '2022-04-22',
                 page: '1',
                 size: '20',
                 sortOrder: 'desc',
@@ -123,7 +123,7 @@ describe('FinancialTransactionController', () => {
             const updateData = {
                 description: 'FinancialTransactionUpdateTest',
                 amount: 55.22,
-                date: '25/04/2022',
+                date: '2022-04-25',
             };
 
             const updatedObject: FinancialTransactionEntity = {

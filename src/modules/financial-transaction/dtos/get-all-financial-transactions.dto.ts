@@ -15,7 +15,7 @@ export class GetAllFinancialTransactionsDTO {
     amount?: number;
 
     @IsOptional()
-    @Matches(/^\d{2}\/\d{2}\/\d{4}$/)
+    @Matches(/^\d{4}-\d{2}-\d{2}$/)
     date?: string;
 
     @IsOptional()
@@ -42,12 +42,12 @@ export class GetAllFinancialTransactionsDTO {
 
     @IsOptional()
     @IsString()
-    @Matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)
+    @Matches(/^\d{4}-\d{2}-\d{2}$/)
     readonly startDateFilter?: string;
 
     @IsOptional()
     @IsString()
-    @Matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)
+    @Matches(/^\d{4}-\d{2}-\d{2}$/)
     readonly endDateFilter?: string;
 
     @IsOptional()

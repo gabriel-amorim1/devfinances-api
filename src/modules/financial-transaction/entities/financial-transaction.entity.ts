@@ -17,7 +17,7 @@ export class FinancialTransactionEntity {
     @Column('decimal', { scale: 2 })
     amount: number;
 
-    @Column()
+    @Column({ type: 'date' })
     date: string;
 
     @CreateDateColumn()

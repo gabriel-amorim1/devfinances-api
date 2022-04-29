@@ -17,6 +17,6 @@ export class UpdateFinancialTransactionDTO {
     amount?: number;
 
     @IsOptional()
-    @Matches(/^\d{2}\/\d{2}\/\d{4}$/)
+    @Matches(/^\d{4}-\d{2}-\d{2}$/)
     date?: string;
 }

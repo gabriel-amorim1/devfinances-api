@@ -41,7 +41,7 @@ describe('FinancialTransaction suite test e2e', () => {
             const data = {
                 description: 'FinancialTransactionCreateTest',
                 amount: 22.22,
-                date: '18/04/2022',
+                date: '2022-04-18',
             };
 
             const res = await request(app.getHttpServer())
@@ -63,7 +63,7 @@ describe('FinancialTransaction suite test e2e', () => {
                 .send({
                     description: '',
                     amount: 22.222,
-                    date: '2022-04-18',
+                    date: 'invalid-date',
                 });
 
             expect(res.statusCode).toBe(400);
@@ -72,7 +72,7 @@ describe('FinancialTransaction suite test e2e', () => {
                 expect.arrayContaining([
                     'description should not be empty',
                     'amount must be a number conforming to the specified constraints',
-                    'date must match /^\\d{2}\\/\\d{2}\\/\\d{4}$/ regular expression',
+                    'date must match /^\\d{4}-\\d{2}-\\d{2}$/ regular expression',
                 ]),
             );
         });
@@ -88,7 +88,7 @@ describe('FinancialTransaction suite test e2e', () => {
                 expect.arrayContaining([
                     'description should not be empty',
                     'amount must be a number conforming to the specified constraints',
-                    'date must match /^\\d{2}\\/\\d{2}\\/\\d{4}$/ regular expression',
+                    'date must match /^\\d{4}-\\d{2}-\\d{2}$/ regular expression',
                 ]),
             );
         });
@@ -176,7 +176,7 @@ describe('FinancialTransaction suite test e2e', () => {
                 .query({
                     description: 'description',
                     amount: 2,
-                    date: '22/04/2022',
+                    date: '2022-04-22',
                     page: '1',
                     size: '20',
                     sortOrder: 'DESC',
@@ -203,7 +203,7 @@ describe('FinancialTransaction suite test e2e', () => {
             const updateData = {
                 description: 'FinancialTransactionUpdateTest',
                 amount: 55.22,
-                date: '25/04/2022',
+                date: '2022-04-25',
             };
 
             const res = await request(app.getHttpServer())
@@ -240,7 +240,7 @@ describe('FinancialTransaction suite test e2e', () => {
                 .send({
                     description: '',
                     amount: 22.222,
-                    date: '2022-04-18',
+                    date: 'invalid-date',
                 });
 
             expect(res.statusCode).toBe(400);
@@ -249,7 +249,7 @@ describe('FinancialTransaction suite test e2e', () => {
                 expect.arrayContaining([
                     'description should not be empty',
                     'amount must be a number conforming to the specified constraints',
-                    'date must match /^\\d{2}\\/\\d{2}\\/\\d{4}$/ regular expression',
+                    'date must match /^\\d{4}-\\d{2}-\\d{2}$/ regular expression',
                 ]),
             );
         });
