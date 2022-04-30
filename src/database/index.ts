@@ -1,5 +1,4 @@
 import * as dotenv from 'dotenv';
-import * as path from 'path';
 
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
@@ -12,7 +11,7 @@ export const databaseConfig: TypeOrmModuleOptions = {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [`${path.resolve(__dirname, '../..')}/**/*.entity.{ts,js}`],
+    entities: ['dist/**/*.entity{.ts,.js}'],
 };
 
 export function getDatabaseConfigConnectionQA(): TypeOrmModuleOptions {
